@@ -1,0 +1,258 @@
+---
+swagger: "2.0"
+info:
+  description: |-
+    This is the documentation for Shopia's API. To start using this API, please request an api key at https://www.shopia.ai/contact-sales/.
+
+    For queries head over to our help center to talk to chat with our support team at https://www.shopia.ai/knowledgebase/.
+  version: 1.0.0
+  title: Shopia
+  contact:
+    url: https://app.shopia.ai
+    email: support@shopia.ai
+host: app.shopia.ai
+basePath: /api/1.1
+tags:
+- name: Workflow
+  description: Use this to trigger a workflow
+- name: Data
+  description: Use this to fetch, modify and delete data
+schemes:
+- https
+consumes:
+- application/json
+security:
+- api_token: []
+paths:
+  /wf/ad_generate:
+    post:
+      tags:
+      - Workflow
+      summary: Generate quality ads optimized for search engines & social media platforms. (Google, Facebook Ads or Instagram Captions)
+      description: Triggers the workflow ad_generate
+      parameters:
+      - in: body
+        name: ad_generate request body
+        description: Body of the POST request
+        required: false
+        schema:
+          $ref: '#/definitions/ad_generateBody'
+      responses:
+        "200":
+          description: Workflow response
+          schema:
+            $ref: '#/definitions/inline_response_200'
+        "400":
+          description: Workflow failure
+          schema:
+            $ref: '#/definitions/inline_response_400'
+        "401":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/inline_response_401'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/inline_response_401'
+        "405":
+          description: Wrong method
+          schema:
+            $ref: '#/definitions/inline_response_401'
+        "429":
+          description: Too many requests
+          schema:
+            $ref: '#/definitions/inline_response_401'
+        "500":
+          description: Internal bug. Please file a bug report at bubble.io/bug_report with the request that triggers this bug
+          schema:
+            $ref: '#/definitions/inline_response_500'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/inline_response_401'
+  /wf/login:
+    post:
+      tags:
+      - Workflow
+      summary: Log in with your Shopia user credentials to generate an API access token
+      description: Triggers the workflow login
+      parameters:
+      - in: body
+        name: login request body
+        description: Body of the POST request
+        required: false
+        schema:
+          $ref: '#/definitions/loginBody'
+      security: []
+      responses:
+        "200":
+          description: Workflow response
+          schema:
+            $ref: '#/definitions/inline_response_200_1'
+        "400":
+          description: Workflow failure
+          schema:
+            $ref: '#/definitions/inline_response_400'
+        "401":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/inline_response_401'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/inline_response_401'
+        "405":
+          description: Wrong method
+          schema:
+            $ref: '#/definitions/inline_response_401'
+        "429":
+          description: Too many requests
+          schema:
+            $ref: '#/definitions/inline_response_401'
+        "500":
+          description: Internal bug. Please file a bug report at bubble.io/bug_report with the request that triggers this bug
+          schema:
+            $ref: '#/definitions/inline_response_500'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/inline_response_401'
+  /wf/product_generate_description:
+    post:
+      tags:
+      - Workflow
+      summary: Generate optimized product descriptions from a product title and a few key features (3 minimum)
+      description: Triggers the workflow product_generate_description
+      parameters:
+      - in: body
+        name: product_generate_description request body
+        description: Body of the POST request
+        required: false
+        schema:
+          $ref: '#/definitions/product_generate_descriptionBody'
+      responses:
+        "200":
+          description: Workflow response
+          schema:
+            $ref: '#/definitions/inline_response_200'
+        "400":
+          description: Workflow failure
+          schema:
+            $ref: '#/definitions/inline_response_400'
+        "401":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/inline_response_401'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/inline_response_401'
+        "405":
+          description: Wrong method
+          schema:
+            $ref: '#/definitions/inline_response_401'
+        "429":
+          description: Too many requests
+          schema:
+            $ref: '#/definitions/inline_response_401'
+        "500":
+          description: Internal bug. Please file a bug report at bubble.io/bug_report with the request that triggers this bug
+          schema:
+            $ref: '#/definitions/inline_response_500'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/inline_response_401'
+securityDefinitions:
+  api_token:
+    type: apiKey
+    name: api_token
+    in: query
+definitions:
+  ad_generateBody:
+    type: object
+    required:
+    - ad_type
+    - key_features
+    - product_title
+    properties:
+      ad_type:
+        type: string
+      product_title:
+        type: string
+      key_features:
+        type: array
+        items:
+          type: string
+  loginBody:
+    type: object
+    required:
+    - email
+    - password
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+  product_generate_descriptionBody:
+    type: object
+    required:
+    - language
+    - product
+    properties:
+      product:
+        type: string
+        description: product ('product' represented by a unique ID)
+      language:
+        type: string
+  inline_response_200:
+    type: object
+    properties:
+      status:
+        type: string
+        description: Outcome of the workflow
+      response:
+        type: object
+        properties: {}
+  inline_response_400:
+    type: object
+    properties:
+      status:
+        type: string
+        description: Outcome of the workflow
+      message:
+        type: string
+        description: Error message for the workflow
+  inline_response_401:
+    type: object
+    properties:
+      message:
+        type: string
+        description: Error message for the operation
+  inline_response_500:
+    type: object
+    properties:
+      code:
+        type: string
+        description: Error code
+      message:
+        type: string
+        description: Error message for the operation
+  inline_response_200_1_response:
+    type: object
+    properties:
+      user_id:
+        type: string
+      token:
+        type: string
+      expires:
+        type: number
+        format: float
+  inline_response_200_1:
+    type: object
+    properties:
+      status:
+        type: string
+        description: Outcome of the workflow
+      response:
+        $ref: '#/definitions/inline_response_200_1_response'
